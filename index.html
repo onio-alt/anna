@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tap the Heart!</title>
+
+    <!-- Мета-тег для Telegram WebApp -->
+    <meta name="theme-color" content="#87CEEB">
+    <meta name="telegram:webapp" content="login">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            background: linear-gradient(135deg, #87CEEB, #4682B4);
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .coin {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, #ff6666, #cc0000);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: transform 0.1s ease;
+        }
+
+        .coin span {
+            font-size: 28px;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+        }
+
+        .coin:active {
+            transform: scale(0.95);
+        }
+
+        .text-below {
+            position: absolute;
+            bottom: 30px;
+            font-size: 18px;
+            color: #fff;
+            font-weight: bold;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+        }
+
+        .floating-heart {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background-color: red;
+            transform: rotate(-45deg);
+            border-radius: 50%;
+            opacity: 1;
+            animation: floatUp 2s ease-out forwards;
+        }
+
+        .floating-heart::before,
+        .floating-heart::after {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background-color: red;
+            border-radius: 50%;
+        }
+
+        .floating-heart::before {
+            top: -20px;
+            left: 0;
+        }
+
+        .floating-heart::after {
+            left: -20px;
+            top: 0;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-180px) scale(1.5);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="coin" id="coin">
+        <span>Анна</span>
+    </div>
+    <div class="text-below">С любовью, Родион ❤️</div>
+
+    <script>
+        const coin = document.getElementById('coin');
+
+        coin.addEventListener('click', (e) => {
+            // Создаём элемент сердца
+            const floatingHeart = document.createElement('div');
+            floatingHeart.classList.add('floating-heart');
+
+            // Устанавливаем позицию сердца в центре кнопки
+            const rect = coin.getBoundingClientRect();
+            floatingHeart.style.left = `${rect.left + rect.width / 2 - 20}px`;
+            floatingHeart.style.top = `${rect.top + rect.height / 2 - 20}px`;
+
+            // Добавляем сердце в DOM
+            document.body.appendChild(floatingHeart);
+
+            // Удаляем сердце после завершения анимации
+            setTimeout(() => {
+                floatingHeart.remove();
+            }, 2000);
+        });
+
+        // 📲 Фикс для Telegram WebApp
+        if (window.Telegram.WebApp) {
+            Telegram.WebApp.expand();
+        }
+    </script>
+</body>
+</html>
